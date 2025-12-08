@@ -1,0 +1,1599 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.150.0">
+    <meta
+  name="description"
+  content=""
+/>
+<meta name="author" content="thienlh@thienlu.com" />
+
+    <link rel="icon" href="https://TranVanQuyet04.github.io/FJC-report/images/favicon.png" type="image/png">
+
+    <title>Validate Recovery Readiness with AWS Backup Restore Testing :: Internship Report</title>
+
+    
+    <link href="https://TranVanQuyet04.github.io/FJC-report/css/nucleus.css?1765219080" rel="stylesheet">
+    <link href="https://TranVanQuyet04.github.io/FJC-report/css/fontawesome-all.min.css?1765219080" rel="stylesheet">
+    <link href="https://TranVanQuyet04.github.io/FJC-report/css/hybrid.css?1765219080" rel="stylesheet">
+    <link href="https://TranVanQuyet04.github.io/FJC-report/css/featherlight.min.css?1765219080" rel="stylesheet">
+    <link href="https://TranVanQuyet04.github.io/FJC-report/css/perfect-scrollbar.min.css?1765219080" rel="stylesheet">
+    <link href="https://TranVanQuyet04.github.io/FJC-report/css/auto-complete.css?1765219080" rel="stylesheet">
+    <link href="https://TranVanQuyet04.github.io/FJC-report/css/atom-one-dark-reasonable.css?1765219080" rel="stylesheet">
+    <link href="https://TranVanQuyet04.github.io/FJC-report/css/theme.css?1765219080" rel="stylesheet">
+    <link href="https://TranVanQuyet04.github.io/FJC-report/css/hugo-theme.css?1765219080" rel="stylesheet">
+    
+    <link href="https://TranVanQuyet04.github.io/FJC-report/css/theme-workshop.css?1765219080" rel="stylesheet">
+    
+    
+
+    <script src="https://TranVanQuyet04.github.io/FJC-report/js/jquery-3.3.1.min.js?1765219080"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+
+  </head>
+  <body class="" data-url="https://TranVanQuyet04.github.io/FJC-report/3-blogstranslated/3.2-blog2/">
+    <nav
+  id="sidebar"
+  class="showVisitedLinks"
+>
+   
+  <div id="header-wrapper">
+    <div id="header"><a id="logo" href="https://TranVanQuyet04.github.io/FJC-report/">
+  <svg
+    id="Layer_1"
+    data-name="Layer 1"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 60 30"
+    width="30%"
+  >
+    <defs>
+      <style>
+        .cls-1 {
+          fill: #fff;
+        }
+        .cls-2 {
+          fill: #f90;
+          fill-rule: evenodd;
+        }
+      </style>
+    </defs>
+    <title>AWS-Logo_White-Color</title>
+    <path
+      class="cls-1"
+      d="M14.09,10.85a4.7,4.7,0,0,0,.19,1.48,7.73,7.73,0,0,0,.54,1.19.77.77,0,0,1,.12.38.64.64,0,0,1-.32.49l-1,.7a.83.83,0,0,1-.44.15.69.69,0,0,1-.49-.23,3.8,3.8,0,0,1-.6-.77q-.25-.42-.51-1a6.14,6.14,0,0,1-4.89,2.3,4.54,4.54,0,0,1-3.32-1.19,4.27,4.27,0,0,1-1.22-3.2A4.28,4.28,0,0,1,3.61,7.75,6.06,6.06,0,0,1,7.69,6.46a12.47,12.47,0,0,1,1.76.13q.92.13,1.91.36V5.73a3.65,3.65,0,0,0-.79-2.66A3.81,3.81,0,0,0,7.86,2.3a7.71,7.71,0,0,0-1.79.22,12.78,12.78,0,0,0-1.79.57,4.55,4.55,0,0,1-.58.22l-.26,0q-.35,0-.35-.52V2a1.09,1.09,0,0,1,.12-.58,1.2,1.2,0,0,1,.47-.35A10.88,10.88,0,0,1,5.77.32,10.19,10.19,0,0,1,8.36,0a6,6,0,0,1,4.35,1.35,5.49,5.49,0,0,1,1.38,4.09ZM7.34,13.38a5.36,5.36,0,0,0,1.72-.31A3.63,3.63,0,0,0,10.63,12,2.62,2.62,0,0,0,11.19,11a5.63,5.63,0,0,0,.16-1.44v-.7a14.35,14.35,0,0,0-1.53-.28,12.37,12.37,0,0,0-1.56-.1,3.84,3.84,0,0,0-2.47.67A2.34,2.34,0,0,0,5,11a2.35,2.35,0,0,0,.61,1.76A2.4,2.4,0,0,0,7.34,13.38Zm13.35,1.8a1,1,0,0,1-.64-.16,1.3,1.3,0,0,1-.35-.65L15.81,1.51a3,3,0,0,1-.15-.67.36.36,0,0,1,.41-.41H17.7a1,1,0,0,1,.65.16,1.4,1.4,0,0,1,.33.65l2.79,11,2.59-11A1.17,1.17,0,0,1,24.39.6a1.1,1.1,0,0,1,.67-.16H26.4a1.1,1.1,0,0,1,.67.16,1.17,1.17,0,0,1,.32.65L30,12.39,32.88,1.25A1.39,1.39,0,0,1,33.22.6a1,1,0,0,1,.65-.16h1.54a.36.36,0,0,1,.41.41,1.36,1.36,0,0,1,0,.26,3.64,3.64,0,0,1-.12.41l-4,12.86a1.3,1.3,0,0,1-.35.65,1,1,0,0,1-.64.16H29.25a1,1,0,0,1-.67-.17,1.26,1.26,0,0,1-.32-.67L25.67,3.64,23.11,14.34a1.26,1.26,0,0,1-.32.67,1,1,0,0,1-.67.17Zm21.36.44a11.28,11.28,0,0,1-2.56-.29,7.44,7.44,0,0,1-1.92-.67,1,1,0,0,1-.61-.93v-.84q0-.52.38-.52a.9.9,0,0,1,.31.06l.42.17a8.77,8.77,0,0,0,1.83.58,9.78,9.78,0,0,0,2,.2,4.48,4.48,0,0,0,2.43-.55,1.76,1.76,0,0,0,.86-1.57,1.61,1.61,0,0,0-.45-1.16A4.29,4.29,0,0,0,43,9.22l-2.41-.76A5.15,5.15,0,0,1,38,6.78a3.94,3.94,0,0,1-.83-2.41,3.7,3.7,0,0,1,.45-1.85,4.47,4.47,0,0,1,1.19-1.37A5.27,5.27,0,0,1,40.51.29,7.4,7.4,0,0,1,42.6,0a8.87,8.87,0,0,1,1.12.07q.57.07,1.08.19t.95.26a4.27,4.27,0,0,1,.7.29,1.59,1.59,0,0,1,.49.41.94.94,0,0,1,.15.55v.79q0,.52-.38.52a1.76,1.76,0,0,1-.64-.2,7.74,7.74,0,0,0-3.2-.64,4.37,4.37,0,0,0-2.21.47,1.6,1.6,0,0,0-.79,1.48,1.58,1.58,0,0,0,.49,1.18,4.94,4.94,0,0,0,1.83.92L44.55,7a5.08,5.08,0,0,1,2.57,1.6A3.76,3.76,0,0,1,47.9,11a4.21,4.21,0,0,1-.44,1.93,4.4,4.4,0,0,1-1.21,1.47,5.43,5.43,0,0,1-1.85.93A8.25,8.25,0,0,1,42.05,15.62Z"
+    ></path>
+    <path
+      class="cls-2"
+      d="M45.19,23.81C39.72,27.85,31.78,30,25,30A36.64,36.64,0,0,1,.22,20.57c-.51-.46-.06-1.09.56-.74A49.78,49.78,0,0,0,25.53,26.4,49.23,49.23,0,0,0,44.4,22.53C45.32,22.14,46.1,23.14,45.19,23.81Z"
+    ></path>
+    <path
+      class="cls-2"
+      d="M47.47,21.21c-.7-.9-4.63-.42-6.39-.21-.53.06-.62-.4-.14-.74,3.13-2.2,8.27-1.57,8.86-.83s-.16,5.89-3.09,8.35c-.45.38-.88.18-.68-.32C46.69,25.8,48.17,22.11,47.47,21.21Z"
+    ></path>
+  </svg>
+</a>
+</div>
+     <div class="searchbox">
+    <label for="search-by"><i class="fas fa-search"></i></label>
+    <input data-search-input id="search-by" type="search" placeholder="Search...">
+    <span data-search-clear=""><i class="fas fa-times"></i></span>
+</div>
+
+<script type="text/javascript" src="https://TranVanQuyet04.github.io/FJC-report/js/lunr.min.js?1765219080"></script>
+<script type="text/javascript" src="https://TranVanQuyet04.github.io/FJC-report/js/auto-complete.js?1765219080"></script>
+<script type="text/javascript">
+    
+        var baseurl = "https:\/\/TranVanQuyet04.github.io\/FJC-report\/";
+    
+</script>
+<script type="text/javascript" src="https://TranVanQuyet04.github.io/FJC-report/js/search.js?1765219080"></script>
+ 
+  </div>
+
+  <div class="highlightable">
+    <ul class="topics">
+               
+<li
+  data-nav-id="/1-worklog/"
+  title="Worklog"
+  class="dd-item 
+        
+        
+        
+        "
+>
+  <a href="https://TranVanQuyet04.github.io/FJC-report/1-worklog/">
+     <b> 1. </b> Worklog 
+    <i class="fas fa-check read-icon"></i>
+    
+  </a>
+   
+  <ul>
+          
+            
+<li
+  data-nav-id="/1-worklog/1.1-week1/"
+  title="Week 1 Worklog"
+  class="dd-item 
+        
+        
+        
+        "
+>
+  <a href="https://TranVanQuyet04.github.io/FJC-report/1-worklog/1.1-week1/">
+     <b> 1.1. </b> Week 1 Worklog 
+    <i class="fas fa-check read-icon"></i>
+    
+  </a>
+   
+</li>
+    
+            
+<li
+  data-nav-id="/1-worklog/1.10-week10/"
+  title="Week 10 Worklog"
+  class="dd-item 
+        
+        
+        
+        "
+>
+  <a href="https://TranVanQuyet04.github.io/FJC-report/1-worklog/1.10-week10/">
+     <b> 1.10. </b> Week 10 Worklog 
+    <i class="fas fa-check read-icon"></i>
+    
+  </a>
+   
+</li>
+    
+            
+<li
+  data-nav-id="/1-worklog/1.2-week2/"
+  title="Week 2 Worklog"
+  class="dd-item 
+        
+        
+        
+        "
+>
+  <a href="https://TranVanQuyet04.github.io/FJC-report/1-worklog/1.2-week2/">
+     <b> 1.2. </b> Week 2 Worklog 
+    <i class="fas fa-check read-icon"></i>
+    
+  </a>
+   
+</li>
+    
+            
+<li
+  data-nav-id="/1-worklog/1.3-week3/"
+  title="Week 3 Worklog"
+  class="dd-item 
+        
+        
+        
+        "
+>
+  <a href="https://TranVanQuyet04.github.io/FJC-report/1-worklog/1.3-week3/">
+     <b> 1.3. </b> Week 3 Worklog 
+    <i class="fas fa-check read-icon"></i>
+    
+  </a>
+   
+</li>
+    
+            
+<li
+  data-nav-id="/1-worklog/1.4-week4/"
+  title="Week 4 Worklog"
+  class="dd-item 
+        
+        
+        
+        "
+>
+  <a href="https://TranVanQuyet04.github.io/FJC-report/1-worklog/1.4-week4/">
+     <b> 1.4. </b> Week 4 Worklog 
+    <i class="fas fa-check read-icon"></i>
+    
+  </a>
+   
+</li>
+    
+            
+<li
+  data-nav-id="/1-worklog/1.5-week5/"
+  title="Week 5 Worklog"
+  class="dd-item 
+        
+        
+        
+        "
+>
+  <a href="https://TranVanQuyet04.github.io/FJC-report/1-worklog/1.5-week5/">
+     <b> 1.5. </b> Week 5 Worklog 
+    <i class="fas fa-check read-icon"></i>
+    
+  </a>
+   
+</li>
+    
+            
+<li
+  data-nav-id="/1-worklog/1.6-week6/"
+  title="Week 6 Worklog"
+  class="dd-item 
+        
+        
+        
+        "
+>
+  <a href="https://TranVanQuyet04.github.io/FJC-report/1-worklog/1.6-week6/">
+     <b> 1.6. </b> Week 6 Worklog 
+    <i class="fas fa-check read-icon"></i>
+    
+  </a>
+   
+</li>
+    
+            
+<li
+  data-nav-id="/1-worklog/1.7-week7/"
+  title="Week 7 Worklog"
+  class="dd-item 
+        
+        
+        
+        "
+>
+  <a href="https://TranVanQuyet04.github.io/FJC-report/1-worklog/1.7-week7/">
+     <b> 1.7. </b> Week 7 Worklog 
+    <i class="fas fa-check read-icon"></i>
+    
+  </a>
+   
+</li>
+    
+            
+<li
+  data-nav-id="/1-worklog/1.8-week8/"
+  title="Week 8 Worklog"
+  class="dd-item 
+        
+        
+        
+        "
+>
+  <a href="https://TranVanQuyet04.github.io/FJC-report/1-worklog/1.8-week8/">
+     <b> 1.8. </b> Week 8 Worklog 
+    <i class="fas fa-check read-icon"></i>
+    
+  </a>
+   
+</li>
+    
+            
+<li
+  data-nav-id="/1-worklog/1.9-week9/"
+  title="Week 9 Worklog"
+  class="dd-item 
+        
+        
+        
+        "
+>
+  <a href="https://TranVanQuyet04.github.io/FJC-report/1-worklog/1.9-week9/">
+     <b> 1.9. </b> Week 9 Worklog 
+    <i class="fas fa-check read-icon"></i>
+    
+  </a>
+   
+</li>
+    
+            
+<li
+  data-nav-id="/1-worklog/1.11-week11/"
+  title="Week 11 Worklog"
+  class="dd-item 
+        
+        
+        
+        "
+>
+  <a href="https://TranVanQuyet04.github.io/FJC-report/1-worklog/1.11-week11/">
+     <b> 1.11. </b> Week 11 Worklog 
+    <i class="fas fa-check read-icon"></i>
+    
+  </a>
+   
+</li>
+    
+            
+<li
+  data-nav-id="/1-worklog/1.12-week12/"
+  title="Week 12 Worklog"
+  class="dd-item 
+        
+        
+        
+        "
+>
+  <a href="https://TranVanQuyet04.github.io/FJC-report/1-worklog/1.12-week12/">
+     <b> 1.12. </b> Week 12 Worklog 
+    <i class="fas fa-check read-icon"></i>
+    
+  </a>
+   
+</li>
+     
+  </ul>
+  
+</li>
+           
+<li
+  data-nav-id="/2-proposal/"
+  title="Proposal"
+  class="dd-item 
+        
+        
+        
+        "
+>
+  <a href="https://TranVanQuyet04.github.io/FJC-report/2-proposal/">
+     <b> 2. </b> Proposal 
+    <i class="fas fa-check read-icon"></i>
+    
+  </a>
+   
+</li>
+           
+<li
+  data-nav-id="/3-blogstranslated/"
+  title="Translated Blogs"
+  class="dd-item 
+        parent
+        
+        
+        "
+>
+  <a href="https://TranVanQuyet04.github.io/FJC-report/3-blogstranslated/">
+     <b> 3. </b> Translated Blogs 
+    <i class="fas fa-check read-icon"></i>
+    
+  </a>
+   
+  <ul>
+          
+            
+<li
+  data-nav-id="/3-blogstranslated/3.2-blog2/"
+  title="Validate Recovery Readiness with AWS Backup Restore Testing"
+  class="dd-item 
+        
+        active
+        
+        "
+>
+  <a href="https://TranVanQuyet04.github.io/FJC-report/3-blogstranslated/3.2-blog2/">
+     <b> 3.2. </b> Validate Recovery Readiness with AWS Backup Restore Testing 
+    <i class="fas fa-check read-icon"></i>
+    
+  </a>
+   
+</li>
+    
+            
+<li
+  data-nav-id="/3-blogstranslated/3.1-blog1/"
+  title="Enhanced Network Security Control: Flow Management with AWS Network Firewall"
+  class="dd-item 
+        
+        
+        
+        "
+>
+  <a href="https://TranVanQuyet04.github.io/FJC-report/3-blogstranslated/3.1-blog1/">
+     <b> 3.1. </b> Enhanced Network Security Control: Flow Management with AWS Network Firewall 
+    <i class="fas fa-check read-icon"></i>
+    
+  </a>
+   
+</li>
+    
+            
+<li
+  data-nav-id="/3-blogstranslated/3.3-blog3/"
+  title="AWS showcases innovation in media and entertainment with cloud and generative AI at NAB 2025"
+  class="dd-item 
+        
+        
+        
+        "
+>
+  <a href="https://TranVanQuyet04.github.io/FJC-report/3-blogstranslated/3.3-blog3/">
+     <b> 3.3. </b> AWS showcases innovation in media and entertainment with cloud and generative AI at NAB 2025 
+    <i class="fas fa-check read-icon"></i>
+    
+  </a>
+   
+</li>
+     
+  </ul>
+  
+</li>
+           
+<li
+  data-nav-id="/4-eventparticipated/"
+  title="Events Participated"
+  class="dd-item 
+        
+        
+        
+        "
+>
+  <a href="https://TranVanQuyet04.github.io/FJC-report/4-eventparticipated/">
+     <b> 4. </b> Events Participated 
+    <i class="fas fa-check read-icon"></i>
+    
+  </a>
+   
+  <ul>
+          
+            
+<li
+  data-nav-id="/4-eventparticipated/4.1-event1/"
+  title="Event 1"
+  class="dd-item 
+        
+        
+        
+        "
+>
+  <a href="https://TranVanQuyet04.github.io/FJC-report/4-eventparticipated/4.1-event1/">
+     <b> 4.1. </b> Event 1 
+    <i class="fas fa-check read-icon"></i>
+    
+  </a>
+   
+</li>
+    
+            
+<li
+  data-nav-id="/4-eventparticipated/4.2-event2/"
+  title="Event 2"
+  class="dd-item 
+        
+        
+        
+        "
+>
+  <a href="https://TranVanQuyet04.github.io/FJC-report/4-eventparticipated/4.2-event2/">
+     <b> 4.2. </b> Event 2 
+    <i class="fas fa-check read-icon"></i>
+    
+  </a>
+   
+</li>
+     
+  </ul>
+  
+</li>
+           
+<li
+  data-nav-id="/5-workshop/"
+  title="Workshop"
+  class="dd-item 
+        
+        
+        
+        "
+>
+  <a href="https://TranVanQuyet04.github.io/FJC-report/5-workshop/">
+     <b> 5. </b> Workshop 
+    <i class="fas fa-check read-icon"></i>
+    
+  </a>
+   
+  <ul>
+          
+            
+<li
+  data-nav-id="/5-workshop/5.1-workshop-overview/"
+  title="Introduction"
+  class="dd-item 
+        
+        
+        
+        "
+>
+  <a href="https://TranVanQuyet04.github.io/FJC-report/5-workshop/5.1-workshop-overview/">
+     <b> 5.1. </b> Introduction 
+    <i class="fas fa-check read-icon"></i>
+    
+  </a>
+   
+</li>
+    
+            
+<li
+  data-nav-id="/5-workshop/5.2-prerequiste/"
+  title="Prerequiste"
+  class="dd-item 
+        
+        
+        
+        "
+>
+  <a href="https://TranVanQuyet04.github.io/FJC-report/5-workshop/5.2-prerequiste/">
+     <b> 5.2. </b> Prerequiste 
+    <i class="fas fa-check read-icon"></i>
+    
+  </a>
+   
+</li>
+    
+            
+<li
+  data-nav-id="/5-workshop/5.3-s3-secrets-manager/"
+  title="Create a secret manager"
+  class="dd-item 
+        
+        
+        
+        "
+>
+  <a href="https://TranVanQuyet04.github.io/FJC-report/5-workshop/5.3-s3-secrets-manager/">
+     <b> 5.3. </b> Create a secret manager 
+    <i class="fas fa-check read-icon"></i>
+    
+  </a>
+   
+  <ul>
+          
+            
+<li
+  data-nav-id="/5-workshop/5.3-s3-secrets-manager/5.3.1-create-secrets-manager/"
+  title="Create secrets manager"
+  class="dd-item 
+        
+        
+        
+        "
+>
+  <a href="https://TranVanQuyet04.github.io/FJC-report/5-workshop/5.3-s3-secrets-manager/5.3.1-create-secrets-manager/">
+     <b> 5.3.1 </b> Create secrets manager 
+    <i class="fas fa-check read-icon"></i>
+    
+  </a>
+   
+</li>
+     
+  </ul>
+  
+</li>
+    
+            
+<li
+  data-nav-id="/5-workshop/5.4-s3-onprem/"
+  title="Prepare Environment Configuration"
+  class="dd-item 
+        
+        
+        
+        "
+>
+  <a href="https://TranVanQuyet04.github.io/FJC-report/5-workshop/5.4-s3-onprem/">
+     <b> 5.4. </b> Prepare Environment Configuration 
+    <i class="fas fa-check read-icon"></i>
+    
+  </a>
+   
+  <ul>
+          
+            
+<li
+  data-nav-id="/5-workshop/5.4-s3-onprem/5.4.1-prepare/"
+  title="Prepare the environment"
+  class="dd-item 
+        
+        
+        
+        "
+>
+  <a href="https://TranVanQuyet04.github.io/FJC-report/5-workshop/5.4-s3-onprem/5.4.1-prepare/">
+     <b> 5.4.1 </b> Prepare the environment 
+    <i class="fas fa-check read-icon"></i>
+    
+  </a>
+   
+</li>
+     
+  </ul>
+  
+</li>
+    
+            
+<li
+  data-nav-id="/5-workshop/5.5-cleanup/"
+  title="Clean up"
+  class="dd-item 
+        
+        
+        
+        "
+>
+  <a href="https://TranVanQuyet04.github.io/FJC-report/5-workshop/5.5-cleanup/">
+     <b> 5.5. </b> Clean up 
+    <i class="fas fa-check read-icon"></i>
+    
+  </a>
+   
+</li>
+     
+  </ul>
+  
+</li>
+           
+<li
+  data-nav-id="/6-self-evaluation/"
+  title="Self-Assessment"
+  class="dd-item 
+        
+        
+        
+        "
+>
+  <a href="https://TranVanQuyet04.github.io/FJC-report/6-self-evaluation/">
+     <b> 6. </b> Self-Assessment 
+    <i class="fas fa-check read-icon"></i>
+    
+  </a>
+   
+</li>
+           
+<li
+  data-nav-id="/7-feedback/"
+  title="Sharing and Feedback"
+  class="dd-item 
+        
+        
+        
+        "
+>
+  <a href="https://TranVanQuyet04.github.io/FJC-report/7-feedback/">
+     <b> 7. </b> Sharing and Feedback 
+    <i class="fas fa-check read-icon"></i>
+    
+  </a>
+   
+</li>
+    
+    </ul>
+
+     
+    <section id="shortcuts">
+      <h3>
+        More
+      </h3>
+      <ul>
+        
+        <li>
+          <a class="padding" href="https://www.facebook.com/groups/awsstudygroupfcj/"
+            ><i class='fab fa-facebook'></i> AWS Study Group</a
+          >
+        </li>
+        
+      </ul>
+    </section>
+     
+    <section id="prefooter">
+      <hr />
+      <ul>
+        
+        <li>
+          <a class="padding">
+            <i class="fas fa-language fa-fw"></i>
+            <div class="select-style">
+              <select id="select-language" onchange="location = this.value;">
+                       
+                <option
+                  id="en"
+                  value="https://TranVanQuyet04.github.io/FJC-report/3-blogstranslated/3.2-blog2/"
+                  selected
+                >
+                  English
+                </option>
+                            
+                <option
+                  id="vi"
+                  value="https://TranVanQuyet04.github.io/FJC-report/vi/3-blogstranslated/3.2-blog2/"
+                >
+                  Tiếng Việt
+                </option>
+                   
+              </select>
+              <svg
+                version="1.1"
+                id="Capa_1"
+                xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+                x="0px"
+                y="0px"
+                width="255px"
+                height="255px"
+                viewBox="0 0 255 255"
+                style="enable-background: new 0 0 255 255"
+                xml:space="preserve"
+              >
+                <g>
+                  <g id="arrow-drop-down">
+                    <polygon points="0,63.75 127.5,191.25 255,63.75 		" />
+                  </g>
+                </g>
+              </svg>
+            </div>
+          </a>
+        </li>
+         
+        <li>
+          <a class="padding" href="#" data-clear-history-toggle=""
+            ><i class="fas fa-history fa-fw"></i> Clear History</a
+          >
+        </li>
+        
+      </ul>
+    </section>
+    
+    <section id="footer"><left>
+    
+    <b> Workshop</b> <br>
+    <img src="https://hitwebcounter.com/counter/counter.php?page=7920860&style=0038&nbdigits=9&type=page&initCount=0"
+        title="Migrate" Alt="web counter" border="0" /></a> <br>
+    <b> <a href="https://cloudjourney.awsstudygroup.com/">Cloud Journey</a></b> <br>
+    <img src="https://hitwebcounter.com/counter/counter.php?page=7830807&style=0038&nbdigits=9&type=page&initCount=0"
+        title="Total CLoud Journey" Alt="web counter" border="0" />
+
+</left>
+<left>
+    <br>
+    <br>
+    <b>Last Updated</b><br>
+    <i>
+        <span id="lastUpdated" style="color:orange;"></span>
+    </i>
+
+    <script>
+        
+        const today = new Date();
+        
+        const formattedDate = today.toLocaleDateString('en-GB');
+        
+        document.getElementById('lastUpdated').textContent = formattedDate;
+    </script>
+</left>
+<left>
+    <br>
+    <br>
+    <b> Team </b> <br>
+
+    <i> <a href="https://www.facebook.com/groups/660548818043427" style="color:orange">First Cloud Journey </a> <br>
+
+    </i>
+</left>
+
+<script async defer src="https://buttons.github.io/buttons.js"></script></section>
+  </div>
+</nav>
+
+
+
+
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable">
+              
+              <div>
+                <div id="top-bar">
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links">
+                 
+                 
+                    
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            <a href='https://TranVanQuyet04.github.io/FJC-report/'>Internship Report</a> > <a href='https://TranVanQuyet04.github.io/FJC-report/3-blogstranslated/'>Translated Blogs</a> > Validate Recovery Readiness with AWS Backup Restore Testing
+          
+        
+          
+        
+          
+        
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+  <div class="wrapper"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#why-restore-testing-matters">Why Restore Testing Matters</a></li>
+    <li><a href="#key-concepts-keyword-terminology">Key Concepts (Keyword Terminology)</a></li>
+    <li><a href="#three-reasons-to-adopt-aws-backup-restore-testing">Three Reasons to Adopt AWS Backup Restore Testing</a>
+      <ul>
+        <li><a href="#1-meet-internal-dr-goals-with-consistent-recovery-validation">1) Meet Internal DR Goals with Consistent Recovery Validation</a></li>
+        <li><a href="#2-achieve-regulatory-compliance-with-documented-evidence">2) Achieve Regulatory Compliance with Documented Evidence</a></li>
+        <li><a href="#3-safeguard-backup-integrity-against-cyber-threats">3) Safeguard Backup Integrity Against Cyber Threats</a></li>
+      </ul>
+    </li>
+    <li><a href="#distributed-reference-architecture-restore-testing">Distributed Reference Architecture (Restore Testing)</a></li>
+    <li><a href="#practical-workflow-high-level">Practical Workflow (High-Level)</a></li>
+    <li><a href="#things-to-know-operational-notes">Things to Know (Operational Notes)</a></li>
+    <li><a href="#conclusion">Conclusion</a></li>
+  </ul>
+</nav></div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          
+            <h1>
+              
+              Validate Recovery Readiness with AWS Backup Restore Testing
+            </h1>
+          
+
+        
+
+
+
+	<!-- 
+
+<div
+  class="notices warning"
+  
+>
+  <p>⚠️ <strong>Note:</strong> The information below is for reference purposes only. Please <strong>do not copy verbatim</strong> for your report, including this warning.</p>
+
+</div>
+
+
+# Validate Recovery Readiness with AWS Backup Restore Testing -->
+<p><strong>Core idea:</strong> Many organizations back up critical workloads but don’t regularly confirm those backups can be restored within required recovery targets. This creates risk for <strong>disaster recovery (DR)</strong>, <strong>compliance</strong>, and <strong>cyber resilience</strong>.</p>
+<p><strong>AWS Backup restore testing:</strong> A capability that <strong>automates backup validation</strong> by running restore tests in controlled environments and producing evidence/reporting—turning a manual, error-prone process into a repeatable workflow.</p>
+<hr>
+<h2 id="why-restore-testing-matters">Why Restore Testing Matters</h2>
+<p><strong>Operational risk:</strong> A backup that cannot restore (or restores too slowly) can cause unexpected downtime during real incidents.</p>
+<p><strong>Business continuity:</strong> Regular validation builds confidence that recovery plans work when needed.</p>
+<p><strong>Compliance &amp; regulation:</strong> Many frameworks and regulators require evidence that recovery processes are tested and effective.</p>
+<p><strong>Cyber resilience:</strong> Ransomware and related threats may target backups; restore validation helps confirm backups remain usable and intact.</p>
+<hr>
+<h2 id="key-concepts-keyword-terminology">Key Concepts (Keyword Terminology)</h2>
+<p><strong>Data resilience:</strong> The ability to maintain and recover data and services through outages or attacks.</p>
+<p><strong>Disaster recovery (DR):</strong> Processes and systems used to restore services after disruption.</p>
+<p><strong>RTO (Recovery Time Objective):</strong> The maximum acceptable time to restore a service after an incident.</p>
+<p><strong>RPO (Recovery Point Objective):</strong> The maximum acceptable data loss measured in time (how far back you can recover).</p>
+<p><strong>Restore testing:</strong> Running structured restore operations from backups to verify recoverability, timing (RTO), and integrity.</p>
+<p><strong>Isolated environment (sandbox):</strong> A testing space separated from production to reduce operational risk during validation.</p>
+<hr>
+<h2 id="three-reasons-to-adopt-aws-backup-restore-testing">Three Reasons to Adopt AWS Backup Restore Testing</h2>
+<h3 id="1-meet-internal-dr-goals-with-consistent-recovery-validation">1) Meet Internal DR Goals with Consistent Recovery Validation</h3>
+<p><strong>Problem:</strong> DR strategies often create backups but do not continuously validate that recovery targets are met.</p>
+<p><strong>Value delivered:</strong></p>
+<ul>
+<li><strong>Schedule</strong> restore validation as part of routine DR drills.</li>
+<li><strong>Verify RTO/RPO</strong> consistently across workloads.</li>
+<li><strong>Test restores in isolated environments</strong> to reduce production risk.</li>
+<li><strong>Generate detailed reports</strong> to support transparency and readiness.</li>
+</ul>
+<p><strong>Supported workload examples:</strong> Common AWS services such as block storage, databases, and object storage can be included in restore validation workflows (depending on configured restore testing support and policies).</p>
+<hr>
+<h3 id="2-achieve-regulatory-compliance-with-documented-evidence">2) Achieve Regulatory Compliance with Documented Evidence</h3>
+<p><strong>Compliance pressure:</strong> Organizations—especially in regulated sectors—must demonstrate recovery readiness through <strong>tested</strong> and <strong>documented</strong> processes.</p>
+<p><strong>Common regulation layers:</strong></p>
+<ul>
+<li><strong>Global frameworks:</strong> Baseline resilience/security expectations that include recovery validation.</li>
+<li><strong>Regional regulations:</strong> Additional resilience requirements based on region (e.g., financial sector mandates).</li>
+<li><strong>National requirements:</strong> Country-specific rules requiring documented testing frequency and proof.</li>
+</ul>
+<p><strong>How restore testing helps:</strong></p>
+<ul>
+<li><strong>Consistent testing</strong> aligned to compliance expectations.</li>
+<li><strong>Audit logs</strong> and evidence for reviewers.</li>
+<li><strong>Customizable test frequency</strong> to match regulatory schedules.</li>
+<li><strong>Broad support</strong> across workload types to reduce compliance gaps.</li>
+</ul>
+<hr>
+<h3 id="3-safeguard-backup-integrity-against-cyber-threats">3) Safeguard Backup Integrity Against Cyber Threats</h3>
+<p><strong>Threat landscape:</strong> Attacks may attempt to disrupt recovery by targeting backups. Validation ensures backups are <strong>restorable</strong> and <strong>not corrupted</strong>.</p>
+<p><strong>Benefits:</strong></p>
+<ul>
+<li><strong>Routine integrity checks</strong> to detect corruption/tampering.</li>
+<li><strong>Recovery simulations</strong> that confirm procedures work under pressure.</li>
+<li><strong>Security integrations</strong> (for example vault protection and key management) to strengthen tamper resistance.</li>
+<li><strong>Optional partner integrations</strong> (e.g., advanced threat detection during testing) where applicable.</li>
+</ul>
+<hr>
+<h2 id="distributed-reference-architecture-restore-testing">Distributed Reference Architecture (Restore Testing)</h2>
+<p><strong>Design goal:</strong> Validate recovery readiness without affecting production, while improving security boundaries.</p>
+<p><strong>Accounts separation (high level):</strong></p>
+<ul>
+<li><strong>Workload account:</strong> Hosts production workloads and generates recovery points (backups).</li>
+<li><strong>Vault account:</strong> Stores recovery points in a protected vault design (including logically air-gapped patterns where configured).</li>
+<li><strong>Forensics account:</strong> Performs restore testing using shared recovery points, runs validations, and produces reports.</li>
+</ul>
+<p><strong>Key outcomes:</strong></p>
+<ul>
+<li><strong>Isolation:</strong> Restore tests occur outside production environments.</li>
+<li><strong>Security:</strong> Backup storage and access can be tightly controlled (vault protections, key management, controlled sharing).</li>
+<li><strong>Evidence:</strong> Compliance reports can be produced (for example via AWS Backup Audit Manager reporting patterns).</li>
+</ul>
+<img src="https://TranVanQuyet04.github.io/FJC-report/images/3-Blogs/bl2-1.png" alt="AWS Backup reference architecture for restore testing" />
+<hr>
+<h2 id="practical-workflow-high-level">Practical Workflow (High-Level)</h2>
+<p><strong>Step 1 — Define test plan:</strong> Select workloads, recovery points, frequency, and validation checks (including RTO/RPO expectations where relevant).</p>
+<p><strong>Step 2 — Execute restores in isolation:</strong> Run restore testing in a sandbox/forensics environment.</p>
+<p><strong>Step 3 — Validate outcomes:</strong> Confirm:</p>
+<ul>
+<li>Restore completes successfully</li>
+<li>Recovery time aligns with targets (RTO)</li>
+<li>Data/app integrity checks pass (where configured)</li>
+</ul>
+<p><strong>Step 4 — Produce evidence:</strong> Generate logs and reports that can be used for audits and internal DR governance.</p>
+<hr>
+<h2 id="things-to-know-operational-notes">Things to Know (Operational Notes)</h2>
+<p><strong>Repeatability:</strong> Automation reduces human error and ensures tests run consistently.</p>
+<p><strong>Isolation-first:</strong> Restores should be validated in environments designed not to impact production.</p>
+<p><strong>Evidence matters:</strong> Logs/reports are as important as successful restores for audits and governance.</p>
+<p><strong>Security posture:</strong> Strong vault controls and key management increase resistance against tampering and improve confidence in recovery.</p>
+<hr>
+<h2 id="conclusion">Conclusion</h2>
+<p><strong>Bottom line:</strong> Backups that are not tested weaken confidence in recoverability and increase risk during outages or cyber events. <strong>AWS Backup restore testing</strong> automates restore validation, supports recurring DR drills, and helps generate compliance evidence—moving teams from hoping backups work to knowing recovery is achievable.</p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div> 
+        
+
+      </div>
+
+    <div id="navigation">
+        
+        
+        
+        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+        
+        
+
+
+	 
+	 
+		
+			<a class="nav nav-prev" href="https://TranVanQuyet04.github.io/FJC-report/3-blogstranslated/" title="Translated Blogs"> <i class="fa fa-chevron-left"></i></a>
+		
+		
+			<a class="nav nav-next" href="https://TranVanQuyet04.github.io/FJC-report/3-blogstranslated/3.1-blog1/" title="Enhanced Network Security Control: Flow Management with AWS Network Firewall" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
+		
+	
+    </div>
+
+    </section>
+    
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="https://TranVanQuyet04.github.io/FJC-report/js/clipboard.min.js?1765219080"></script>
+    <script src="https://TranVanQuyet04.github.io/FJC-report/js/perfect-scrollbar.min.js?1765219080"></script>
+    <script src="https://TranVanQuyet04.github.io/FJC-report/js/perfect-scrollbar.jquery.min.js?1765219080"></script>
+    <script src="https://TranVanQuyet04.github.io/FJC-report/js/jquery.sticky.js?1765219080"></script>
+    <script src="https://TranVanQuyet04.github.io/FJC-report/js/featherlight.min.js?1765219080"></script>
+    <script src="https://TranVanQuyet04.github.io/FJC-report/js/highlight.pack.js?1765219080"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="https://TranVanQuyet04.github.io/FJC-report/js/modernizr.custom-3.6.0.js?1765219080"></script>
+    <script src="https://TranVanQuyet04.github.io/FJC-report/js/learn.js?1765219080"></script>
+    <script src="https://TranVanQuyet04.github.io/FJC-report/js/hugo-learn.js?1765219080"></script>
+
+    <link href="https://TranVanQuyet04.github.io/FJC-report/mermaid/mermaid.css?1765219080" rel="stylesheet" />
+    <script src="https://TranVanQuyet04.github.io/FJC-report/mermaid/mermaid.js?1765219080"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true });
+    </script>
+    <script>
+  (function (i, s, o, g, r, a, m) {
+    i["GoogleAnalyticsObject"] = r;
+    ((i[r] =
+      i[r] ||
+      function () {
+        (i[r].q = i[r].q || []).push(arguments);
+      }),
+      (i[r].l = 1 * new Date()));
+    ((a = s.createElement(o)), (m = s.getElementsByTagName(o)[0]));
+    a.async = 1;
+    a.src = g;
+    m.parentNode.insertBefore(a, m);
+  })(
+    window,
+    document,
+    "script",
+    "https://www.google-analytics.com/analytics.js",
+    "ga",
+  );
+
+  ga("create", "UA-158079754-2", "auto");
+  ga("send", "pageview");
+</script>
+
+  </body>
+</html>

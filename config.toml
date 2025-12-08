@@ -1,6 +1,8 @@
-baseURL = "https://thienluhoan.github.io/workshop-template/"
-relativeURLs = true
+baseURL = "https://TranVanQuyet04.github.io/FJC-report/"
+relativeURLs = false
 canonifyURLs = true
+publishDir = "docs"
+
 
 # Change the default theme to be use when building the site with Hugo
 theme = "hugo-theme-learn"

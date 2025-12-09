@@ -9,7 +9,7 @@ chapter: false
 ### Thông tin sinh viên:
 &emsp; **Họ và tên:** Trần Văn Quyết
 
-&emsp; **Số điện thoại:** 08383972331
+&emsp; **Số điện thoại:** 0838972331
 
 &emsp; **Email:** tranquyetcoder@gmail.com
 

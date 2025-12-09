@@ -21,7 +21,7 @@ chapter: false
 
 &emsp; **Class:** AWS
 
-&emsp; **Internship Company:** Amazon Web Services Vietnam Co., Ltd.
+&emsp; **Internship Company:** Amazon Web Services Vietnam
 
 &emsp; **Internship Position:** FCJ Cloud Intern
 
